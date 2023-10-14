@@ -28,8 +28,18 @@ let listTask = [
     }
 ];
 
-app.get('/', (req, res)=>{
+app.get('/', (req, res) => {
     res.json(listTask)
+})
+
+app.get('/undone', (req, res) => {
+    let tab = []
+    for (let i = 0; i< listTask.length; i++){
+        if(listTask[i].isDone === false){
+            tab.push(listTask[i])
+        }
+    }
+    return res.json(tab)
 })
 
 app.listen(port, () => {
