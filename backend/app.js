@@ -28,10 +28,12 @@ let listTask = [
     }
 ];
 
+//Afficher toutes les tâches
 app.get('/', (req, res) => {
     res.json(listTask)
 })
 
+//Afficher uniquement les tâches non faites
 app.get('/undone', (req, res) => {
     let tab = []
     for (let i = 0; i< listTask.length; i++){
@@ -40,6 +42,12 @@ app.get('/undone', (req, res) => {
         }
     }
     return res.json(tab)
+})
+
+//Ajouter une tâche
+app.post('/edit', (req, res)=>{
+    listTask.push(req.body);
+    res.json(listTask);
 })
 
 app.listen(port, () => {
