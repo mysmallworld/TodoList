@@ -1,4 +1,5 @@
 # TodoList
+Backend node.js et express permettant de gérer une liste de tâches.
 
-# node.js, express, js, nodemon
+# js, node.js, express, nodemon, mysql
 Pour lancer le server : nodemon app.js
