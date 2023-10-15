@@ -3,6 +3,9 @@ const bodyParser = require('body-parser').json();
 const app = express();
 const port = 8080;
 
+// Appel du token
+const token = require('./token');
+
 // Partie connection à la BDD avec mysql
 const mysql = require('mysql2');
 
@@ -56,7 +59,7 @@ let listTask = [
 ];
 
 // Afficher toutes les tâches
-app.get('/', (req, res) => {
+app.get('/', token, (req, res) => {
     connection.query('SELECT * FROM tasks', (err, rows, fields) => {
         if (err) throw err;
         res.json(rows);
@@ -64,7 +67,7 @@ app.get('/', (req, res) => {
 })
 
 // Afficher uniquement les tâches non faites
-app.get('/undone', (req, res) => {
+app.get('/undone', token, (req, res) => {
     sql = 'SELECT * FROM tasks';
 
     connection.query(sql, (err, rows, fields) => {
@@ -76,7 +79,7 @@ app.get('/undone', (req, res) => {
         }
 
         if (err) throw err;
-        
+
         tab.length < 2 ? console.log(`Il vous reste ${tab.length} tâche à faire !`) : console.log(`Il vous reste ${tab.length} tâches à faire !`);
         
         return res.json(tab);
@@ -84,7 +87,7 @@ app.get('/undone', (req, res) => {
 })
 
 // Ajouter une tâche
-app.post('/', (req, res) => {
+app.post('/', token, (req, res) => {
     sql = "INSERT INTO tasks(id, name, dueDate, isDone) VALUES(?,?,?,?)";
     let values = [req.body.id, req.body.name, req.body.dueDate, req.body.isDone];
 
@@ -97,7 +100,7 @@ app.post('/', (req, res) => {
 })
 
 // Marquer une tâche à faite
-app.put('/done/:id', (req, res) => {
+app.put('/done/:id', token, (req, res) => {
     sql = "UPDATE tasks SET id = ?, name = ?, dueDate = ?, isDone = ? WHERE id = ?";
     let values = [req.body.id, req.body.name, req.body.dueDate, req.body.isDone, req.params.id];
 
@@ -116,14 +119,14 @@ app.put('/done/:id', (req, res) => {
 })
 
 // Modifier une tâche existante
-app.put('/:id', (req, res) => {
+app.put('/:id', token, (req, res) => {
     sql = "UPDATE tasks SET id = ?, name = ?, dueDate = ?, isDone = ? WHERE id = ?";
     let values = [req.body.id, req.body.name, req.body.dueDate, req.body.isDone, req.params.id];
 
     connection.query(sql, values, (err, rows, fields) => {
         if (err) throw err;
 
-        const task = listTask.find(todo => todo.id == req.params.id)
+        const task = listTask.find(todo => todo.id == req.params.id);
 
         if (task === undefined) {
             console.log(err);
@@ -138,7 +141,7 @@ app.put('/:id', (req, res) => {
 })
 
 // Supprimer une tâche
-app.delete('/:id', (req, res) => {
+app.delete('/:id', token, (req, res) => {
     sql = "DELETE FROM tasks WHERE id = ?";
     let values = [req.params.id];
 
