@@ -24,4 +24,4 @@ http://localhost:8080/id Supprimer une tâche
 ## Token
 Sur d'autres projets, le token ne doit pas être partagé mais voici la marche à suivre pour chaque requête :   
 -Aller sur Postman,  
--Dans la partie Headers ajouter la key "token" avec la valeur "monToken" contenu dans le fichier env.js(qui par sécurité ne doit normalement pas être envoyé).  
+-Dans la partie Headers ajouter la key "token" avec la valeur "monToken" contenu dans le fichier env.js (qui par sécurité ne doit normalement pas être envoyé).  
